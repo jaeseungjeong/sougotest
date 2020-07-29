@@ -7,6 +7,8 @@ function log() {
   echo "$@" | tee -a ${LOGFILE}
 }
 
+dataCategory="ActivePower"
+
 timeset=15
 size=61
 for j in `seq 0 $timeset`
@@ -17,6 +19,7 @@ endtime=`date --date "$j hour ago" '+%Y-%m-%dT%H:%M:%S.000Z'`
 
 echo $starttime
 echo $endtime
+res=$(curl -s -X GET 'http://10.1.5.199:8666/STH/v1/contextEntities/type/SmartMeter/id/IIJECHONETtest/attributes/'$dataCatalog'?lastN='$size'&dateFrom='$starttime'&dateTo='$endtime'' -H 'fiware-service: openiot' -H 'fiware-servicepath: /' | jq)
 
 for i in `seq 0 $size`
 do
